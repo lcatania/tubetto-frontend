@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '~codemirror/lib/codemirror.css';
+@import '~codemirror/addon/lint/lint.css';
+@import '~codemirror/addon/hint/show-hint.css';
+@import '~codemirror/theme/material.css';
+@import 'ngx-toastr/toastr';
+
+@font-face {
+    font-family: 'Borel';
+    src: url("assets/fonts/Borel-Regular.ttf") format("truetype");
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.logo {
+    font-family: 'Borel', sans-serif;
+}
+
+.tick {
+
+    text {
+        fill: white;
+
+    }
+}

@@ -1,0 +1,512 @@
+<app-base-modal [showModal]="showModal" [showFooter]="false" [title]="'Create Pipeline'"
+    [size]="isSuccessful ? 'small' : 'medium'" (dismissTriggered)="cancel()">
+
+
+    <ol *ngIf="!isSuccessful" class="flex items-center w-full justify-between mb-5">
+        <li [class.after:!border-indigo-500]="(currentStep | appConvertStepToIndex) > 0"
+            class="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700">
+            <span [class.!bg-indigo-500]="(currentStep | appConvertStepToIndex) > -1"
+                class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+                <i-feather name="database" class="text-white"></i-feather>
+            </span>
+        </li>
+        <li [class.after:!border-indigo-500]="(currentStep | appConvertStepToIndex) > 1"
+            class="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700">
+            <span [class.!bg-indigo-500]="(currentStep | appConvertStepToIndex) > 0"
+                class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+                <i-feather name="code" class="text-white"></i-feather>
+            </span>
+        </li>
+        <li [class.after:!border-indigo-500]="(currentStep | appConvertStepToIndex) > 2"
+            class="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700">
+            <span [class.!bg-indigo-500]="(currentStep | appConvertStepToIndex) > 1"
+                class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+                <i-feather name="file" class="text-white"></i-feather>
+            </span>
+        </li>
+        <li [class.after:!border-indigo-500]="(currentStep | appConvertStepToIndex) > 3"
+            class="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700">
+            <span [class.!bg-indigo-500]="(currentStep | appConvertStepToIndex) > 2"
+                class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+                <i-feather name="clock" class="text-white"></i-feather>
+            </span>
+        </li>
+        <li class="flex items-center ">
+            <span [class.!bg-indigo-500]="(currentStep | appConvertStepToIndex) > 3"
+                class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+                <i-feather name="send" class="text-white"></i-feather>
+            </span>
+        </li>
+    </ol>
+
+    <ng-container *ngIf="currentStep === 'DATASOURCE' && !isSuccessful">
+        <input *ngIf="!isSuccessful" type="text" [(ngModel)]="pipeline.name"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm mb-3 rounded-lg outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-[200px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+            placeholder="Pipeline name" required>
+        <div class="flex gap-x-5">
+            <ul class="bg-gray-700 h-[540px] min-w-[200px] w-48 overflow-y-auto rounded-md ">
+                <li class="border-b border-gray-500 px-3 py-2 flex justify-between text-white cursor-pointer">
+                    <div class="flex gap-x-3">
+                        <i-feather name="database"></i-feather>
+                        Databases
+                    </div>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.connectionType === 'PG'"
+                    [class.!text-gray-800]="pipeline.connectionType === 'PG'" (click)="setConnectionType('PG')"
+                    class="ps-8 border-b border-gray-500 px-3 py-2 text-white flex gap-x-3 cursor-pointer group hover:bg-indigo-400 hover:text-gray-800">
+                    <img [class.!brightness-100]="pipeline.connectionType === 'PG'"
+                        class="group-hover:brightness-100 group-hover:contrast-150 filter brightness-200" width="25"
+                        src="assets/brand-icons/postgres.svg">
+                    Postgres
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.connectionType === 'MYSQL'"
+                    [class.!text-gray-800]="pipeline.connectionType === 'MYSQL'" (click)="setConnectionType('MYSQL')"
+                    class="ps-8 border-b border-gray-500 px-3 py-2 text-white flex gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <img width="25" src="assets/brand-icons/mysql.svg">
+                    MySQL
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.connectionType === 'MSSQL'"
+                    [class.!text-gray-800]="pipeline.connectionType === 'MSSQL'" (click)="setConnectionType('MSSQL')"
+                    class="ps-8 border-b border-gray-500 px-3 py-2 text-white flex gap-x-3 cursor-pointer hover:bg-indigo-400 group hover:text-gray-800">
+                    <img [class.!brightness-100]="pipeline.connectionType === 'MSSQL'"
+                        class="group-hover:brightness-100 group-hover:contrast-150 filter brightness-200" width="25"
+                        src="assets/brand-icons/postgres.svg">
+                    MSSQL
+                </li>
+            </ul>
+            <div class="w-full flex flex-col justify-between">
+                <div class="flex flex-col gap-y-4">
+                    <div class="flex-1">
+                        <label for="first_name"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Connection
+                            String</label>
+                        <input type="text" [(ngModel)]="pipeline.connection"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Connection string" required>
+                    </div>
+                    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-indigo-700 w-full">
+                    <div class="flex  gap-x-3">
+                        <div class="flex-1">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Host</label>
+                            <input type="text"
+                                [value]="pipeline.connection | appConnectionStringSplit:pipeline.connectionType:'HOST'"
+                                (input)="setConnectionString($event, 'HOST')"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                placeholder="0.0.0.0" required>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Port</label>
+                            <input type="text"
+                                [value]="pipeline.connection | appConnectionStringSplit:pipeline.connectionType:'PORT'"
+                                (input)="setConnectionString($event, 'PORT')"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                placeholder="5325" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                        <input type="text"
+                            [value]="pipeline.connection | appConnectionStringSplit:pipeline.connectionType:'USER'"
+                            (input)="setConnectionString($event, 'USER')"
+                            class="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="user" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        <input type="password"
+                            [value]="pipeline.connection | appConnectionStringSplit:pipeline.connectionType:'PASSWORD'"
+                            (input)="setConnectionString($event, 'PASSWORD')"
+                            class="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="my super secret password" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Database</label>
+                        <input type="text"
+                            [value]="pipeline.connection | appConnectionStringSplit:pipeline.connectionType:'DATABASE'"
+                            (input)="setConnectionString($event, 'DATABASE')"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm outline-none rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="my database" required>
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <button
+                        class="bg-gray-700  py-2 px-4 flex items-center gap-x-2 rounded-md transition-transform active:scale-95"
+                        (click)="testConnection()">
+                        <svg aria-hidden="true" *ngIf="isLoading"
+                            class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-400"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="text-white">Test Connection</span>
+                        <i-feather name="zap" class="text-white"></i-feather>
+                    </button>
+                    <button
+                        [disabled]="!(pipeline.connection | appValidateConnection:pipeline.connectionType) || pipeline.name === ''"
+                        [class.opacity-25]="!(pipeline.connection | appValidateConnection:pipeline.connectionType) || pipeline.name === ''"
+                        class="bg-indigo-700 py-2 px-4 flex gap-x-4 rounded-md transition-transform active:scale-95"
+                        (click)="setPage('CONTENT')">
+                        <span class="text-white">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 'CONTENT' && !isSuccessful">
+        <div class="flex flex-col gap-y-4">
+            <h1 class="text-1xl text-white ">Write your query to get the data that you want to send or use AI
+                to generate it for you</h1>
+            <div>
+                <div class="flex gap-x-3">
+                    <textarea [(ngModel)]="queryAIPrompt"
+                        class="bg-gray-50 resize-none border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                        placeholder="AI Prompt"></textarea>
+                    <button
+                        class="bg-gray-700 py-3 px-4 flex gap-x-4 rounded-md flex-col justify-center items-center transition-transform active:scale-95"
+                        (click)="generateQueryByAI()">
+                        <svg aria-hidden="true" *ngIf="isAILoading"
+                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-400"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span *ngIf="!isAILoading" class="text-white">Generate</span>
+                        <i-feather *ngIf="!isAILoading" name="zap" class="text-white"></i-feather>
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="isAIGenerated"
+                class="flex items-start p-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                role="alert">
+                <svg class="flex-shrink-0  inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="font-medium">Warning!</span>
+                    <span>Always double check your query, our AI is not flawless</span>
+                </div>
+            </div>
+            <div *ngIf="!isAIGenerated"
+                class="flex items-start p-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                role="alert">
+                <svg class="flex-shrink-0  inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="font-medium">Warning!</span>
+                    <span>Only one <b>SELECT</b> statement is allowed per Pipeline and any other keyword like
+                        <b>DELETE</b>, <b>INSERT</b>, <b>ALTER</b>, <b>UPDATE</b> etc. are not supported.</span>
+                    <span><b>Caution: Besides mentioned checks , we are not scanning if the syntax is
+                            correct.</b></span>
+                </div>
+            </div>
+            <ngx-codemirror #codemirror [options]="codeMirrorOptions" [(ngModel)]="pipeline.query">
+            </ngx-codemirror>
+
+        </div>
+        <div class="flex justify-end gap-x-3 mt-3">
+            <div class="flex gap-x-3">
+                <button
+                    class="w-16 text-white hover:bg-gray-200 hover:bg-opacity-60 hover:text-gray-800 rounded-md transition-transform active:scale-95"
+                    (click)="setPage('DATASOURCE')">
+                    <span>Back</span>
+                </button>
+                <button [disabled]="!(pipeline.query| appValidateQuery)"
+                    [class.opacity-25]="!(pipeline.query| appValidateQuery)"
+                    class="bg-indigo-700 py-2 px-4 flex gap-x-4 rounded-md transition-transform active:scale-95"
+                    (click)="setPage('CONVERTER')">
+                    <span class="text-white">Next</span>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 'CONVERTER' && !isSuccessful">
+        <h1 class="text-2xl text-white mb-4">Select the output format of your data</h1>
+        <div class="flex gap-x-5">
+            <ul class="bg-gray-700 h-[600px] min-w-[200px] w-48 overflow-y-auto rounded-md ">
+                <li class="border-b border-gray-500 px-3 py-2 flex justify-between text-white cursor-pointer">
+                    <div class="flex gap-x-3">
+                        Format
+                    </div>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'CSV'"
+                    [class.!text-gray-800]="pipeline.format === 'CSV'" (click)="pipeline.format = 'CSV'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer  hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-green-400 dark:text-gray-800">CSV</span>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'JSON'"
+                    [class.!text-gray-800]="pipeline.format === 'JSON'" (click)="pipeline.format = 'JSON'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-yellow-400 dark:text-gray-800">JSON</span>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'JSONL'"
+                    [class.!text-gray-800]="pipeline.format === 'JSONL'" (click)="pipeline.format = 'JSONL'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-red-400 dark:text-gray-800">JSON
+                        Lines</span>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'PARQUET'"
+                    [class.!text-gray-800]="pipeline.format === 'PARQUET'" (click)="pipeline.format = 'PARQUET'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-amber-400 dark:text-gray-800">Parquet</span>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'FEATHER'"
+                    [class.!text-gray-800]="pipeline.format === 'FEATHER'" (click)="pipeline.format = 'FEATHER'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-white dark:text-gray-800">Feather</span>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'YAML'"
+                    [class.!text-gray-800]="pipeline.format === 'YAML'" (click)="pipeline.format = 'YAML'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-indigo-400 dark:text-gray-800">YAML</span>
+                </li>
+                <li [class.!bg-indigo-400]="pipeline.format === 'XML'"
+                    [class.!text-gray-800]="pipeline.format === 'XML'" (click)="pipeline.format = 'XML'"
+                    class="ps-3 border-b border-gray-500  py-2 text-white flex items-center gap-x-3 cursor-pointer hover:bg-indigo-400 hover:text-gray-800">
+                    <i-feather name="file"></i-feather>
+                    <span
+                        class="bg-gray-100  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-blue-400 dark:text-gray-800">XML</span>
+                </li>
+            </ul>
+            <div class="w-full flex flex-col justify-between">
+                <div class="flex flex-col gap-y-4">
+                    <div class="flex flex-col gap-y-3">
+                        <div class="flex gap-x-3">
+                            <app-base-dropdown [label]="'Column delimiter'" [items]="dropdownCSVTabDelimiter"
+                                (itemSelected)="setFormatSetting('columnDelimiter',$event)"></app-base-dropdown>
+                            <app-base-dropdown [label]="'String delimiter'" [items]="dropdownCSVStringDelimiter"
+                                (itemSelected)="setFormatSetting('stringDelimiter',$event)"></app-base-dropdown>
+                        </div>
+                        <div>
+                            <label class="text-white">Field Mapping:</label>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-y-3 ">
+                        <div class="flex gap-x-10 items-center justify-start" *ngFor="let mapping of pipeline.formatSettings.mapping | keyvalue;trackBy: trackByMapping ">
+                            <span class="text-white text-lg min-w-[50px] ">{{mapping.key}}:</span>
+                            <input  (ngModelChange)="pipeline.formatSettings.mapping[mapping.key] = $event" [ngModel]="mapping.value"
+                                    class="bg-gray-50 w-1/2 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                    placeholder="Field name" />
+                        </div>
+                        <div class="flex gap-x-3" *ngIf="queryContainsStar">
+                            <span>Add Mapping Field</span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-x-3 mt-3">
+                    <button class="w-16 text-white hover:bg-gray-200 hover:bg-opacity-60 hover:text-gray-800 rounded-md"
+                        (click)="setPage('CONTENT')">
+                        <span>Back</span>
+                    </button>
+                    <button class="bg-indigo-700 py-2 px-4 flex gap-x-4 rounded-md " (click)="setPage('TIMING')">
+                        <span class="text-white">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </ng-container>
+    <ng-container *ngIf="currentStep === 'TIMING' && !isSuccessful">
+        <h1 class="text-1xl text-white mb-2">Set how often you want your Pipeline to execute or describe in
+            which interval your Pipeline should run</h1>
+        <div class="flex flex-col  gap-x-5 gap-y-3">
+            <div class="flex gap-x-3">
+                <input [(ngModel)]="cronAIPrompt"
+                    class="bg-gray-50 resize-none border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                    placeholder="AI Prompt" />
+                <button
+                    class="bg-gray-700 px-5 flex gap-x-2 rounded-md  justify-center items-center transition-transform active:scale-95">
+                    <svg aria-hidden="true" *ngIf="isAILoading"
+                        class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-400"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="text-white">Generate</span>
+                    <i-feather name="zap" class="text-white"></i-feather>
+                </button>
+            </div>
+            <div class="flex gap-x-3 items-center">
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-indigo-700 w-full">
+                <span class="text-md text-white w-[370px]">or if you know CRON</span>
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-indigo-700 w-full">
+            </div>
+            <div class="flex flex-col gap-y-5 items-center">
+                <span
+                    class="text-2xl text-white bg-indigo-600 py-5 px-10 bg-opacity-50 rounded-full mb-5">“{{pipeline.cron
+                    | appCronTranslation}}”</span>
+
+                <div class="grid grid-cols-5 grid-rows-2 gap-4 mb-8">
+                    <span class="text-white text-md flex justify-center items-center">Minute</span>
+                    <span class="text-white text-md flex justify-center items-center">Hour</span>
+                    <span class="text-white text-md flex justify-center items-center text-center">Day <br />
+                        (Month)</span>
+                    <span class="text-white text-md flex justify-center items-center">Month</span>
+                    <span class="text-white text-md flex justify-center items-center text-center">Day
+                        <br />(Weekday)</span>
+                    <div class="flex justify-center">
+                        <input #cronInput1 type="text" [value]="pipeline.cron | appCronSplit:0"
+                            (input)="cronChanged(cronInput1.value,0)"
+                            class="w-[50px] h-[50px] rounded bg-slate-50 outline-none text-center border-2 border-transparent focus:border-indigo-400 flex justify-center" />
+                    </div>
+                    <div class="flex justify-center">
+                        <input #cronInput2 type="text" [value]="pipeline.cron | appCronSplit:1"
+                            (input)="cronChanged(cronInput2.value,1)"
+                            class="w-[50px] h-[50px] rounded bg-slate-50 outline-none text-center border-2 border-transparent focus:border-indigo-400 flex justify-center" />
+                    </div>
+                    <div class="flex justify-center">
+                        <input #cronInput3 type="text" [value]="pipeline.cron | appCronSplit:2"
+                            (input)="cronChanged(cronInput3.value,2)"
+                            class="w-[50px] h-[50px] rounded bg-slate-50 outline-none text-center border-2 border-transparent focus:border-indigo-400 flex justify-center" />
+                    </div>
+                    <div class="flex justify-center">
+                        <input #cronInput4 type="text" [value]="pipeline.cron | appCronSplit:3"
+                            (input)="cronChanged(cronInput4.value,3)"
+                            class="w-[50px] h-[50px] rounded bg-slate-50 outline-none text-center border-2 border-transparent focus:border-indigo-400 flex justify-center" />
+                    </div>
+                    <div class="flex justify-center">
+                        <input #cronInput5 type="text" [value]="pipeline.cron | appCronSplit:4"
+                            (input)="cronChanged(cronInput5.value,4)"
+                            class="w-[50px] h-[50px] rounded bg-slate-50 outline-none text-center border-2 border-transparent focus:border-indigo-400 flex justify-center" />
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-x-3 mt-3">
+                <button class="w-16 text-white hover:bg-gray-200 hover:bg-opacity-60 hover:text-gray-800 rounded-md"
+                    (click)="setPage('CONVERTER')">
+                    <span>Back</span>
+                </button>
+                <button class="bg-indigo-700 py-2 px-4 flex gap-x-4 rounded-md " (click)="setPage('TRANSPORT')">
+                    <span class="text-white">Next</span>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 'TRANSPORT' && !isSuccessful">
+        <h1 class="text-2xl text-white mb-4">To whom should we send the data ?</h1>
+        <div class="flex flex-col gap-y-3">
+            <div class="flex gap-x-3" *ngFor="let email of pipeline.emails;let i = index">
+                <input [value]="email" readonly
+                    class="bg-gray-50 resize-none border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                    placeholder="Email" />
+
+                <button (click)="removeEmail(i)"
+                    class="bg-transparent px-5 flex border hover:bg-red-600 dark:border-red-500 dark:text-red-500 flex-col gap-y-1 rounded-md  justify-center items-center py-2">
+                    <i-feather name="x"></i-feather>
+                </button>
+            </div>
+            <div class="flex gap-x-3">
+                <input #newEmailInput type="email"
+                    (keyup.enter)="addEmail(newEmailInput.value);newEmailInput.value = ''"
+                    class="bg-gray-50 resize-none border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                    placeholder="New Email" />
+                <button class="bg-gray-700 px-5 flex flex-col gap-y-1 rounded-md  justify-center items-center py-2"
+                    (click)="addEmail(newEmailInput.value);newEmailInput.value = ''">
+                    <i-feather name="plus" class="text-white"></i-feather>
+                </button>
+            </div>
+
+            <h2 class="text-white text-xl">
+                How long or often should the file be available ?
+            </h2>
+
+            <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover"
+                class="text-white bg-indigo-700 w-[200px] justify-between hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+                type="button">Once for everyone<svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg></button>
+            <!-- Dropdown menu -->
+            <div id="dropdownHover"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                            out</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex justify-end gap-x-3 mt-3">
+                <button class="w-16 text-white hover:bg-gray-200 hover:bg-opacity-60 hover:text-gray-800 rounded-md"
+                    (click)="setPage('TIMING')">
+                    <span>Back</span>
+                </button>
+                <button class="bg-indigo-700 py-2 px-4 flex gap-x-2 items-center rounded-md " (click)="save()">
+                    <svg aria-hidden="true" *ngIf="isLoading"
+                        class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-400"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="text-white">Save</span>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="isSuccessful">
+        <div class="flex justify-center items-center h-56">
+            <div class="relative p-4 text-center bg-white  dark:bg-gray-800 sm:p-5">
+                <div
+                    class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+                    <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor"
+                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">Successfully created pipeline.</p>
+            </div>
+        </div>
+    </ng-container>
+</app-base-modal>

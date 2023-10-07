@@ -1,0 +1,122 @@
+<!-- New design !!-->
+<!-- <div class="w-full min-h-[100vh] flex gap-x-5 bg-slate-50">
+    <div class="w-[250px] border-r-2 bg-gray-200 border-gray-300 py-5 px-3 flex flex-col">
+        <h1 class="logo text-indigo-700 text-5xl mt-6  cursor-pointer transition-transform active:scale-95 select-none"
+            (click)="home()">Tubetto</h1>
+        <ul class="flex flex-col h-full gap-y-2 mt-10">
+            <li
+                class="w-full h-10 rounded-md flex items-center p-3 gap-x-3 text-zinc-900 hover:bg-gray-300 cursor-pointer hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:w-1 hover:before:bg-indigo-700 hover:before:h-full hover:before:rounded-l-full relative">
+                <i-feather name="git-commit" class=" text-zinc-700"></i-feather>
+                <span>Pipelines</span>
+            </li>
+            <li
+                class="w-full h-10 rounded-md flex items-center p-3 gap-x-3 text-zinc-900 hover:bg-gray-300 cursor-pointer hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:w-1 hover:before:bg-indigo-700 hover:before:h-full hover:before:rounded-l-full relative">
+                <i-feather name="sliders" class=" text-zinc-700"></i-feather>
+                <span>Settings</span>
+            </li>
+            <li
+                class="w-full h-10 rounded-md flex items-center p-3 gap-x-3 text-zinc-900 hover:bg-gray-300 cursor-pointer hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:w-1 hover:before:bg-indigo-700 hover:before:h-full hover:before:rounded-l-full relative">
+                <i-feather name="activity" class=" text-zinc-700"></i-feather>
+                <span>Activity</span>
+            </li>
+            <li
+                class="w-full h-10 rounded-md flex mt-auto items-center p-3 gap-x-3 text-zinc-900 hover:bg-gray-300 cursor-pointer ">
+                <i-feather name="log-out" class=" text-zinc-700"></i-feather>
+                <span>Logout</span>
+            </li>
+        </ul>
+    </div>
+    <div class=" p-5 w-2/4">
+        <router-outlet></router-outlet>
+    </div>
+</div> -->
+<div class="antialiased bg-gray-50 dark:bg-gray-900">
+    <!--Sidebar-->
+    <aside
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Sidenav" id="drawer-navigation">
+        <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+            <h1 class="logo text-indigo-500 text-5xl mt-6 pb-3 cursor-pointer transition-transform active:scale-95 select-none"
+                (click)="home()">Tubetto</h1>
+            <ul class="space-y-2">
+                <li class="group">
+                    <a [routerLink]="'/app/dashboard'" [routerLinkActive]="'!text-indigo-400'"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                        <i-feather name="grid" [routerLinkActive]="'!text-indigo-400'"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">Overview</span>
+                    </a>
+                </li>
+                <li class="group">
+                    <a [routerLink]="'/app/pipeline'" [routerLinkActive]="'!text-indigo-400'"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                        <i-feather name="git-commit" [routerLinkActive]="'!text-indigo-400'"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">Pipelines</span>
+                    </a>
+                </li>
+                <li class="group">
+                    <a [routerLink]="'/app/log'" [routerLinkActive]="'!text-indigo-400'"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                        <i-feather name="activity" [routerLinkActive]="'!text-indigo-400'"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">Activity</span>
+                    </a>
+                </li>
+                <li class="group">
+                    <a [routerLink]="'/app/connection'" [routerLinkActive]="'!text-indigo-400'"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                        <i-feather name="zap"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">Connections</span>
+                    </a>
+                </li>
+                <li class="group">
+                    <a [routerLink]="'/app/settings'" [routerLinkActive]="'!text-indigo-400'"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                        <i-feather name="sliders"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+                <li>
+                    <a
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                        <i-feather name="help-circle"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">FAQ</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                        <i-feather name="mail"
+                            class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-feather>
+                        <span class="ml-3">Feedback</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="p-4 md:ml-64 min-h-[100vh] ">
+        <router-outlet></router-outlet>
+    </main>
+</div>
+
+<!-- <div class="w-full min-h-[100vh] flex flex-col gap-y-5 items-center bg-gradient-to-b from-slate-800 to-gray-900">
+    <div class="w-[940px] h-24 flex justify-between">
+        <h1 class="logo text-indigo-400 mt-10 text-5xl font-mono cursor-pointer transition-transform active:scale-95 select-none"
+            (click)="home()">Tubetto</h1>
+        <div
+            class="rounded-full w-14 h-14 self-center bg-transparent border-4 border-indigo-700 flex justify-center items-center cursor-pointer">
+            <span class="text-white text-xl"> LC</span>
+        </div>
+    </div>
+    <div class="w-[940px]">
+        <router-outlet></router-outlet>
+
+    </div>
+</div> -->

@@ -1,0 +1,10 @@
+<div class="flex flex-1 mb-10">
+    <ul class="w-full ">
+        <app-log-item 
+            *ngFor="let log of logs;let first = first;let last = last;"
+            [log]="log"
+            [first]="first"
+            [last]="last"
+        ></app-log-item>
+    </ul>
+</div>

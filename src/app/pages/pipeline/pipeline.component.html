@@ -1,0 +1,105 @@
+<section class="bg-gray-50 dark:bg-gray-900 h-full">
+
+    <div class="max-w-screen-full flex flex-col gap-y-5">
+        <div class="flex gap-x-3">
+            <button (click)="showCreatePipelineModal()"
+                class="bg-indigo-700 py-2 px-4 flex gap-x-4 rounded-md shadow-lg transition-transform active:scale-95">
+                <span class="text-white">New Pipeline</span>
+                <i-feather name="git-commit" class="text-white"></i-feather>
+            </button>
+            <div class="w-full md:w-1/2">
+                <form class="flex items-center">
+                    <label for="simple-search" class="sr-only">Search</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <input type="text" id="simple-search"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="Search" required="">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <div *ngFor="let pipeline of pipelines" (click)="openDashboard(pipeline.id)"
+                class="h-32 md:h-32 max-w-sm p-3 cursor-pointer relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 justify-between flex flex-col">
+                <div class="flex flex-col">
+                    <a>
+                        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {{pipeline.name}}</h5>
+                    </a>
+                    <div class="flex flex-col gap-y-2">
+                        <div class="flex gap-x-3 text-gray-900 dark:text-white">
+                            Source:
+                            <img class="group-hover:brightness-100 group-hover:contrast-150 filter brightness-200"
+                                width="25" src="assets/brand-icons/postgres.svg">
+                        </div>
+                        <div class="flex items-center gap-x-3 text-gray-900 dark:text-white">
+                            Output: <span
+                                class="bg-green-400  text-gray-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-green-400 dark:text-gray-800">CSV</span>
+                        </div>
+                    </div>
+                </div>
+                <div (mouseenter)="showExecutionTime(pipeline)" (click)="openDashboard(pipeline.id)"
+                    [tooltip]="hoveredNextExecutionDistance" [position]="'ABOVE'" [showDelay]="100" [hideDelay]="100"
+                    [refreshRate]="500"
+                    class="cursor-pointer hover:bg-slate-50 hover:bg-opacity-20  absolute top-1 right-1 rounded-full w-[40px] h-[40px] flex justify-center items-center transition-transform active:scale-95">
+                    <i-feather name="clock" class="text-white pointer-events-none"></i-feather>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- <div class="w-full pb-10">
+    <button (click)="showCreatePipelineModal()"
+        class="bg-indigo-700 py-2 px-4 flex gap-x-4 rounded-md mb-5 shadow-lg transition-transform active:scale-95">
+        <span class="text-white">New Pipeline</span>
+        <i-feather name="git-commit" class="text-white"></i-feather>
+    </button>
+    <div class="relative overflow-x-auto rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Name
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-right">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pipeline of pipelines;let first = first;let last = last;"
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" [class.border-b]="!last">
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <div class="flex items-center gap-x-3">
+                            <span class="cursor-pointer" (click)="openDashboard(pipeline.id)">{{pipeline.name}}</span>
+                        </div>
+                    </td>
+                    <td class="px-2 py-4 w-[120px]">
+                        <div class="flex items-center gap-x-3">
+                            <div (click)="openDashboard(pipeline.id)"
+                                class="cursor-pointer hover:bg-slate-50 hover:bg-opacity-20 rounded-full w-[40px] h-[40px] flex justify-center items-center transition-transform active:scale-95">
+                                <i-feather name="grid" class="text-white"></i-feather>
+                            </div>
+                            
+                            <div
+                                class="cursor-pointer hover:bg-slate-50 hover:bg-opacity-20 rounded-full w-[40px] h-[40px] flex justify-center items-center transition-transform active:scale-95">
+                                <i-feather name="sliders" class="text-white"></i-feather>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> -->
+<app-create-pipeline [showModal]="isCreatePipelineModalVisible"
+    (dismissTriggered)="isCreatePipelineModalVisible = false"></app-create-pipeline>

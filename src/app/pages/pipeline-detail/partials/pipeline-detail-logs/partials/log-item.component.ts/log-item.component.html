@@ -1,0 +1,23 @@
+<li class="bg-gray-800 py-2 px-2  flex flex-col  border-gray-700 h-12 transition-height duration-300 ease-in-out"
+    [class.h-80]="open" [class.rounded-t-lg]="first" [class.rounded-b-lg]="last" [class.border-b]="!last">
+    <div class="flex justify-between gap-x-2 text-white cursor-pointer" (click)="open = !open">
+        <div class="flex gap-x-5 items-center justify-between w-full p-1">
+            <div class="flex gap-x-3">
+                <div class="rounded-full w-6 h-6 flex justify-center items-center  text-white"
+                    [class.bg-red-500]="log?.status === 'FAILED'" [class.bg-yellow-600]="log?.status === 'WARNING'"
+                    [class.bg-green-500]="log?.status === 'SUCCESS'">
+                    {{log?.status === 'FAILED' || log?.status === 'WARNING' ? '!' : '✓'}}
+                </div>
+                <span><b>{{log?.status}}: {{log?.executedAt | date:'yyyy-MM-dd HH:mm:ss'}} </b></span>
+            </div>
+
+            <span *ngIf="log && log.executionTime">Executed in <b>
+                    {{ log.executionTime > 1000 ? (log.executionTime / 1000) + 's' : log.executionTime + 'ms'
+                    }}</b></span>
+        </div>
+        <i-feather name="chevron-down" class="transition-transform duration-300 mt-1"
+            [class.rotate-180]="open"></i-feather>
+    </div>
+    <code *ngIf="open" class="mt-3 border-indigo-600 border h-full p-4 rounded-md text-white text-sm"
+        [innerHTML]="log?.content"></code>
+</li>
